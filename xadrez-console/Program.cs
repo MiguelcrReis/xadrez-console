@@ -1,12 +1,13 @@
 ﻿using tabuleiro;
+using xadrez_console;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Tabuleiro tab = new Tabuleiro(8, 8);
+        Tabuleiro tabuleiro = new Tabuleiro(8, 8);
 
-        Console.WriteLine(tab);
+        Tela.imprimirTabuleiro(tabuleiro);
         Console.ReadLine();
 
     }

@@ -4,9 +4,9 @@ class Program
 {
     static void Main(string[] args)
     {
-        Posicao P = new Posicao(10, 10);
+        Tabuleiro tab = new Tabuleiro(8, 8);
 
-        Console.WriteLine("Posição: " + P);
+        Console.WriteLine(tab);
         Console.ReadLine();
 
     }

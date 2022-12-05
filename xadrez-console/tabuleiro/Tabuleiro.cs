@@ -31,6 +31,11 @@
 
         public void colocarPeca(Peca peca, Posicao posicao)
         {
+            if (existePeca(posicao))
+            {
+                throw new TabuleiroException("Posição já oculpada por outra peça!");
+                
+            }
             pecas[posicao.linha, posicao.coluna] = peca;
             peca.posicao = posicao;
         }

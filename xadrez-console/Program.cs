@@ -8,19 +8,18 @@ class Program
     {
         try
         {
-            Tabuleiro tabuleiro = new Tabuleiro(8, 8);
+            PosicaoXadrez posicaoXadrez = new PosicaoXadrez('c', 7);
 
-            tabuleiro.colocarPeca(new Rei(tabuleiro, Cor.Preta), new Posicao(0, 0));
-            tabuleiro.colocarPeca(new Torre(tabuleiro, Cor.Preta), new Posicao(2, 2));
-            tabuleiro.colocarPeca(new Torre(tabuleiro, Cor.Branca), new Posicao(2, 4));
+            Console.WriteLine(posicaoXadrez);
 
-            Tela.imprimirTabuleiro(tabuleiro);
+            Console.WriteLine(posicaoXadrez.toPosicao());
+            
+            Console.ReadLine();
         }
         catch (TabuleiroException ex)
         {
             Console.WriteLine(ex.Message);
         }
-
         Console.ReadLine();
     }
 }

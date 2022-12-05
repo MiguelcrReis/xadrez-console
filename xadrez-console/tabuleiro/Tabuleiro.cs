@@ -18,10 +18,38 @@
             return pecas[linha, coluna];
         }
 
+        public Peca peca(Posicao posicao)
+        {
+            return pecas[posicao.linha, posicao.coluna];
+        }
+
+        public bool existePeca(Posicao posicao)
+        {
+            validaPosicao(posicao);
+            return peca(posicao) != null;
+        }
+
         public void colocarPeca(Peca peca, Posicao posicao)
         {
             pecas[posicao.linha, posicao.coluna] = peca;
-            peca.posicao = posicao; 
+            peca.posicao = posicao;
+        }
+
+        public bool posicaoValida(Posicao posicao)
+        {
+            if (posicao.linha < 0 || posicao.linha >= linhas || posicao.coluna < 0 || posicao.coluna >= colunas)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void validaPosicao(Posicao posicao)
+        {
+            if (!posicaoValida(posicao))
+            {
+                throw new TabuleiroException("Posição inválida!");
+            }
         }
     }
 }

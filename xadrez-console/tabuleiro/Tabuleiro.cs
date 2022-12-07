@@ -34,10 +34,23 @@
             if (existePeca(posicao))
             {
                 throw new TabuleiroException("Posição já oculpada por outra peça!");
-                
+
             }
             pecas[posicao.linha, posicao.coluna] = peca;
             peca.posicao = posicao;
+        }
+
+        public Peca retirarPeca(Posicao posicao)
+        {
+            if (peca(posicao) == null)
+            {
+                return null;
+            }
+
+            Peca pecaAux = peca(posicao);
+            pecaAux.posicao = null;
+            pecas[posicao.linha, posicao.coluna] = null;
+            return pecaAux;
         }
 
         public bool posicaoValida(Posicao posicao)

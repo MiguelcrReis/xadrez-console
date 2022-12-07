@@ -8,14 +8,9 @@ class Program
     {
         try
         {
-            Tabuleiro tabuleiro = new Tabuleiro(8, 8);
+            PartidaXadrez partida = new PartidaXadrez(); 
 
-            tabuleiro.colocarPeca(new Torre(tabuleiro, Cor.Preta), new Posicao(0, 0));
-            tabuleiro.colocarPeca(new Torre(tabuleiro, Cor.Preta), new Posicao(3, 1));
-            tabuleiro.colocarPeca(new Torre(tabuleiro, Cor.Branca), new Posicao(1, 1));
-            tabuleiro.colocarPeca(new Torre(tabuleiro, Cor.Branca), new Posicao(3, 2));
-
-            Tela.imprimirTabuleiro(tabuleiro);
+            Tela.imprimirTabuleiro(partida.tabuleiro);
 
             Console.ReadLine();
         }

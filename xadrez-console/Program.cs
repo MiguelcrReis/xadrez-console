@@ -8,11 +8,23 @@ class Program
     {
         try
         {
-            PartidaXadrez partida = new PartidaXadrez(); 
+            PartidaXadrez partida = new PartidaXadrez();
+            Console.Write("Nova Partida Iniciada: ");
 
-            Tela.imprimirTabuleiro(partida.tabuleiro);
+            while (!partida.terminada)
+            {
+                Console.Clear();
+                Tela.imprimirTabuleiro(partida.tabuleiro);
 
-            Console.ReadLine();
+                Console.WriteLine();
+                Console.Write("Posição Origem: ");
+                Posicao origem = Tela.lerPosicaoXadrez().toPosicao();
+
+                Console.Write("Posição Destino: ");
+                Posicao destino = Tela.lerPosicaoXadrez().toPosicao();
+
+                partida.executaJogada(origem, destino);
+            }
         }
         catch (TabuleiroException ex)
         {

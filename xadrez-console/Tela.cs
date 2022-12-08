@@ -5,11 +5,15 @@ namespace xadrez_console
 {
     class Tela
     {
+        #region Imprimir Tabuleiro
         public static void imprimirTabuleiro(Tabuleiro tabuleiro)
         {
+            ConsoleColor corAux = Console.ForegroundColor;
             for (int i = 0; i < tabuleiro.linhas; i++)
             {
-                Console.Write(8 - i + " ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(8 - i + " | ");
+                Console.ForegroundColor = corAux;
                 for (int j = 0; j < tabuleiro.colunas; j++)
                 {
                     if (tabuleiro.peca(i, j) == null)
@@ -24,9 +28,14 @@ namespace xadrez_console
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("  A B C D E F G H");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("   ________________");
+            Console.WriteLine("    A B C D E F G H");
+            Console.ForegroundColor = corAux;
         }
+        #endregion
 
+        #region Imprimir Peça
         public static void imprimirPeca(Peca peca)
         {
             if (peca.cor == Cor.Branca)
@@ -41,5 +50,6 @@ namespace xadrez_console
                 Console.ForegroundColor = corAux;
             }
         }
+        #endregion
     }
 }

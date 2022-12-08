@@ -16,6 +16,14 @@ namespace tabuleiro
         }
         #endregion
 
+        #region Definir Valores
+        public void definirValores(int linha, int coluna)
+        {
+            this.linha = linha;
+            this.coluna = coluna;
+        }
+        #endregion
+
         #region To String
         public override string ToString()
         {

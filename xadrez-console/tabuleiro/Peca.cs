@@ -2,7 +2,7 @@
 
 namespace tabuleiro
 {
-    class Peca
+    abstract class Peca
     {
         #region Instâncias e variáveis
         public Posicao posicao { get; set; }
@@ -27,5 +27,7 @@ namespace tabuleiro
             qtdMovimentos++;
         }
         #endregion
+
+        public abstract bool[,] movimentosPossiveis();
     }
 }

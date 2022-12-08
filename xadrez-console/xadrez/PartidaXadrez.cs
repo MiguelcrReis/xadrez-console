@@ -7,8 +7,8 @@ namespace xadrez
     {
         #region Instâncias e variáveis
         public Tabuleiro tabuleiro { get; private set; }
-        private int turno;
-        private Cor jogadorAtual;
+        public int turno { get; private set; }
+        public Cor jogadorAtual { get; private set; }
         public bool terminada { get; private set; }
         #endregion
 
@@ -23,14 +23,37 @@ namespace xadrez
         }
         #endregion
 
-        #region Executa Jogada
-        public void executaJogada(Posicao origem, Posicao destino)
+        #region RealizaJogada
+        public void realizaJogada(Posicao origem, Posicao destino)
+        {
+            executaMovimento(origem, destino);
+            turno++;
+            alterajogador();
+        }
+        #endregion
+
+        #region Executa Movimento
+        public void executaMovimento(Posicao origem, Posicao destino)
         {
             Peca peca = tabuleiro.retirarPeca(origem);
             peca.incrementarQtdMovimentos();
 
             Peca pecaCapturada = tabuleiro.retirarPeca(destino);
             tabuleiro.colocarPeca(peca, destino);
+        }
+        #endregion
+
+        #region Altera Jogador
+        private void alterajogador()
+        {
+            if (jogadorAtual == Cor.Branca)
+            {
+                jogadorAtual = Cor.Preta;
+            }
+            else
+            {
+                jogadorAtual = Cor.Branca;
+            }
         }
         #endregion
 

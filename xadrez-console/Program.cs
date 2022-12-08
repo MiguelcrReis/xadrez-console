@@ -15,6 +15,9 @@ class Program
             {
                 Console.Clear();
                 Tela.imprimirTabuleiro(partida.tabuleiro);
+                Console.WriteLine();
+                Console.WriteLine("Turno: " + partida.turno);
+                Console.WriteLine("Jogador Atual: " + partida.jogadorAtual);
 
                 Console.WriteLine();
                 Console.Write("Posição Origem: ");
@@ -29,7 +32,7 @@ class Program
                 Console.Write("Posição Destino: ");
                 Posicao destino = Tela.lerPosicaoXadrez().toPosicao();
 
-                partida.executaJogada(origem, destino);
+                partida.realizaJogada(origem, destino);
             }
         }
         catch (TabuleiroException ex)

@@ -43,6 +43,34 @@ namespace xadrez
         }
         #endregion
 
+        #region Valida Posição de Origem
+        public void validarPosicaoOrigem(Posicao posicao)
+        {
+            if (tabuleiro.peca(posicao) == null)
+            {
+                throw new TabuleiroException("Não existe peça na posição de origem escolhida!");
+            }
+            if (jogadorAtual != tabuleiro.peca(posicao).cor)
+            {
+                throw new TabuleiroException("A peça de origem escolhida não é sua!");
+            }
+            if (!tabuleiro.peca(posicao).existeMovimentosPossiveis())
+            {
+                throw new TabuleiroException("Não há movimentos possíveis para a peça de origem escolhida!");
+            }
+        }
+        #endregion
+
+        #region Valida Posição de Destino
+        public void validarPosicaoDestino(Posicao origem, Posicao destino)
+        {
+            if (!tabuleiro.peca(origem).podeMoverPara(destino))
+            {
+                throw new TabuleiroException("Posição de destino Inválida"); 
+            }
+        }
+        #endregion
+
         #region Altera Jogador
         private void alterajogador()
         {

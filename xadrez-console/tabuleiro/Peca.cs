@@ -28,6 +28,31 @@ namespace tabuleiro
         }
         #endregion
 
+        #region Existe movimentos possiveis
+        public bool existeMovimentosPossiveis()
+        {
+            bool[,] matriz = movimentosPossiveis();
+            for (int i = 0; i < tabuleiro.linhas; i++)
+            {
+                for (int j = 0; j < tabuleiro.colunas; j++)
+                {
+                    if (matriz[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        #endregion
+
+        #region Pode Mover Para
+        public bool podeMoverPara(Posicao posicao)
+        {
+            return movimentosPossiveis()[posicao.linha, posicao.coluna];
+        }
+        #endregion
+
         public abstract bool[,] movimentosPossiveis();
     }
 }

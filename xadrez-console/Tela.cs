@@ -88,6 +88,45 @@ namespace xadrez_console
         }
         #endregion
 
+        #region Imprimir Peças Capturadas
+        public static void imprimirPecasCapturadas(PartidaXadrez partida)
+        {
+            Console.WriteLine("Peças Capturadas:");
+            Console.Write("Brancas: ");
+            imprimirConjunto(partida.pecasCapturadas(Cor.Branca));
+            Console.WriteLine();
+            Console.Write("Pretas: ");
+            ConsoleColor corAux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            imprimirConjunto(partida.pecasCapturadas(Cor.Preta));
+            Console.ForegroundColor = corAux;
+            Console.WriteLine();
+        }
+        #endregion
+
+        #region Imprimir Partida
+        public static void imprimirPartida(PartidaXadrez partida)
+        {
+            imprimirTabuleiro(partida.tabuleiro);
+            Console.WriteLine();
+            imprimirPecasCapturadas(partida);
+            Console.WriteLine("Turno: " + partida.turno);
+            Console.WriteLine("Jogador Atual: " + partida.jogadorAtual);
+        }
+        #endregion
+
+        #region Imprimir Conjunto
+        public static void imprimirConjunto(HashSet<Peca> conjunto)
+        {
+            Console.Write("[");
+            foreach (Peca x in conjunto)
+            {
+                Console.Write(x + " ");
+            }
+            Console.Write("]");
+        }
+        #endregion
+
         #region Ler Posicao Xadrez 
         public static PosicaoXadrez lerPosicaoXadrez()
         {

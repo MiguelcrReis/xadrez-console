@@ -16,10 +16,7 @@ class Program
                 try
                 {
                     Console.Clear();
-                    Tela.imprimirTabuleiro(partida.tabuleiro);
-                    Console.WriteLine();
-                    Console.WriteLine("Turno: " + partida.turno);
-                    Console.WriteLine("Jogador Atual: " + partida.jogadorAtual);
+                    Tela.imprimirPartida(partida);
 
                     Console.WriteLine();
                     Console.Write("Posição Origem: ");

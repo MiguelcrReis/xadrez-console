@@ -47,8 +47,8 @@ namespace tabuleiro
         }
         #endregion
 
-        #region Pode Mover Para
-        public bool podeMoverPara(Posicao posicao)
+        #region Movimento Possível
+        public bool movimentoPossível(Posicao posicao)
         {
             return movimentosPossiveis()[posicao.linha, posicao.coluna];
         }

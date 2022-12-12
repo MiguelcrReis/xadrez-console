@@ -111,7 +111,7 @@ namespace xadrez
         #region Valida Posição de Destino
         public void validarPosicaoDestino(Posicao origem, Posicao destino)
         {
-            if (!tabuleiro.peca(origem).podeMoverPara(destino))
+            if (!tabuleiro.peca(origem).movimentoPossível(destino))
             {
                 throw new TabuleiroException("Posição de destino Inválida");
             }

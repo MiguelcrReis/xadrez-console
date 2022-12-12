@@ -14,6 +14,17 @@ namespace xadrez
             return "P";
         }
 
+        private bool existeInimigo(Posicao posicao)
+        {
+            Peca peca = tabuleiro.peca(posicao);
+            return posicao != null && peca.cor != cor;
+        }
+
+        private bool livre(Posicao posicao)
+        {
+            return tabuleiro.peca(posicao) == null;
+        }
+
         private bool podeMover(Posicao posicao)
         {
             Peca peca = tabuleiro.peca(posicao);
@@ -25,8 +36,60 @@ namespace xadrez
         {
             bool[,] matriz = new bool[tabuleiro.linhas, tabuleiro.colunas];
 
-            Posicao posicao = new Posicao(0, 0);
+            Posicao pos = new(0, 0);
 
+            if (cor == Cor.Branca)
+            {
+                pos.definirValores(posicao.linha - 1, posicao.coluna);
+                if (tabuleiro.posicaoValida(pos) && livre(pos))
+                {
+                    matriz[pos.linha, pos.coluna] = true;
+                }
+
+                pos.definirValores(posicao.linha - 2, posicao.coluna);
+                if (tabuleiro.posicaoValida(pos) && livre(pos) && qtdMovimentos == 0)
+                {
+                    matriz[pos.linha, pos.coluna] = true;
+                }
+
+                pos.definirValores(posicao.linha - 1, posicao.coluna - 1);
+                if (tabuleiro.posicaoValida(pos) && existeInimigo(pos))
+                {
+                    matriz[pos.linha, pos.coluna] = true;
+                }
+
+                pos.definirValores(posicao.linha - 1, posicao.coluna + 1);
+                if (tabuleiro.posicaoValida(pos) && existeInimigo(pos))
+                {
+                    matriz[pos.linha, pos.coluna] = true;
+                }
+            }
+            else
+            {
+                pos.definirValores(posicao.linha + 1, posicao.coluna);
+                if (tabuleiro.posicaoValida(pos) && livre(pos))
+                {
+                    matriz[pos.linha, pos.coluna] = true;
+                }
+
+                pos.definirValores(posicao.linha + 2, posicao.coluna);
+                if (tabuleiro.posicaoValida(pos) && livre(pos) && qtdMovimentos == 0)
+                {
+                    matriz[pos.linha, pos.coluna] = true;
+                }
+
+                pos.definirValores(posicao.linha + 1, posicao.coluna - 1);
+                if (tabuleiro.posicaoValida(pos) && existeInimigo(pos))
+                {
+                    matriz[pos.linha, pos.coluna] = true;
+                }
+
+                pos.definirValores(posicao.linha + 1, posicao.coluna + 1);
+                if (tabuleiro.posicaoValida(pos) && existeInimigo(pos))
+                {
+                    matriz[pos.linha, pos.coluna] = true;
+                }
+            }
 
             return matriz;
         }

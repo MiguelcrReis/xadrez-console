@@ -3,7 +3,7 @@ using tabuleiro;
 
 namespace xadrez
 {
-     class Cavalo: Peca
+    class Cavalo : Peca
     {
         public Cavalo(Tabuleiro tabuleiro, Cor cor) : base(tabuleiro, cor)
         {
@@ -25,8 +25,55 @@ namespace xadrez
         {
             bool[,] matriz = new bool[tabuleiro.linhas, tabuleiro.colunas];
 
-            Posicao posicao = new Posicao(0, 0);
+            Posicao pos = new(0, 0);
 
+            pos.definirValores(posicao.linha - 1, posicao.coluna - 2);
+            if (tabuleiro.posicaoValida(pos) && podeMover(pos))
+            {
+                matriz[pos.linha, pos.coluna] = true;
+            }
+
+            pos.definirValores(posicao.linha - 2, posicao.coluna - 1);
+            if (tabuleiro.posicaoValida(pos) && podeMover(pos))
+            {
+                matriz[pos.linha, pos.coluna] = true;
+            }
+
+            pos.definirValores(posicao.linha - 2, posicao.coluna + 1);
+            if (tabuleiro.posicaoValida(pos) && podeMover(pos))
+            {
+                matriz[pos.linha, pos.coluna] = true;
+            }
+
+            pos.definirValores(posicao.linha - 1, posicao.coluna + 2);
+            if (tabuleiro.posicaoValida(pos) && podeMover(pos))
+            {
+                matriz[pos.linha, pos.coluna] = true;
+            }
+
+            pos.definirValores(posicao.linha + 1, posicao.coluna + 2);
+            if (tabuleiro.posicaoValida(pos) && podeMover(pos))
+            {
+                matriz[pos.linha, pos.coluna] = true;
+            }
+
+            pos.definirValores(posicao.linha + 2, posicao.coluna + 1);
+            if (tabuleiro.posicaoValida(pos) && podeMover(pos))
+            {
+                matriz[pos.linha, pos.coluna] = true;
+            }
+
+            pos.definirValores(posicao.linha + 2, posicao.coluna - 1);
+            if (tabuleiro.posicaoValida(pos) && podeMover(pos))
+            {
+                matriz[pos.linha, pos.coluna] = true;
+            }
+
+            pos.definirValores(posicao.linha + 1, posicao.coluna - 2);
+            if (tabuleiro.posicaoValida(pos) && podeMover(pos))
+            {
+                matriz[pos.linha, pos.coluna] = true;
+            }
 
             return matriz;
         }

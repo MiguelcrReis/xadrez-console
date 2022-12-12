@@ -12,6 +12,7 @@ namespace xadrez
         public bool terminada { get; private set; }
         private HashSet<Peca> pecas;
         private HashSet<Peca> capturadas;
+        public bool xeque { get; private set; }
         #endregion
 
         #region Construtor Partida Xadrez
@@ -24,20 +25,12 @@ namespace xadrez
             pecas = new HashSet<Peca>();
             capturadas = new HashSet<Peca>();
             colocarPecas();
-        }
-        #endregion
-
-        #region RealizaJogada
-        public void realizaJogada(Posicao origem, Posicao destino)
-        {
-            executaMovimento(origem, destino);
-            turno++;
-            alterajogador();
+            xeque = false;
         }
         #endregion
 
         #region Executa Movimento
-        public void executaMovimento(Posicao origem, Posicao destino)
+        public Peca executaMovimento(Posicao origem, Posicao destino)
         {
             Peca peca = tabuleiro.retirarPeca(origem);
             peca.incrementarQtdMovimentos();
@@ -49,6 +42,44 @@ namespace xadrez
             {
                 capturadas.Add(pecaCapturada);
             }
+
+            return pecaCapturada;
+        }
+        #endregion
+
+        #region Desfaz o Movimento
+        public void desfazMovimento(Posicao origem, Posicao destino, Peca pecaCapturada)
+        {
+            Peca peca = tabuleiro.retirarPeca(destino);
+            peca.decrementarQtdMovimentos();
+
+            if (pecaCapturada != null)
+            {
+                tabuleiro.colocarPeca(pecaCapturada, destino);
+                capturadas.Remove(pecaCapturada);
+            }
+            tabuleiro.colocarPeca(peca, origem);
+        }
+
+        #endregion
+
+        #region Realiza Jogada
+        public void realizaJogada(Posicao origem, Posicao destino)
+        {
+            var pecaCapturada = executaMovimento(origem, destino);
+
+            if (verificaXeque(jogadorAtual))
+            {
+                desfazMovimento(origem, destino, pecaCapturada);
+                throw new TabuleiroException("Você não pode se colocar em Xeque!");
+            }
+
+            if (verificaXeque(adversaria(jogadorAtual)))
+            { xeque = true; }
+            else { xeque = false; }
+
+            turno++;
+            alterajogador();
         }
         #endregion
 
@@ -113,7 +144,7 @@ namespace xadrez
         public HashSet<Peca> pecasEmJogo(Cor cor)
         {
             HashSet<Peca> pecasAux = new HashSet<Peca>();
-            foreach (Peca x in capturadas)
+            foreach (Peca x in pecas)
             {
                 if (x.cor == cor)
                 {
@@ -122,6 +153,49 @@ namespace xadrez
             }
             pecasAux.ExceptWith(pecasCapturadas(cor));
             return pecasAux;
+        }
+        #endregion
+
+        #region Peça Adversária 
+        private Cor adversaria(Cor cor)
+        {
+            if (cor == Cor.Branca)
+            { return Cor.Preta; }
+            else
+            { return Cor.Branca; }
+        }
+        #endregion
+
+        #region Consulta Rei
+        private Peca rei(Cor cor)
+        {
+            foreach (Peca x in pecasEmJogo(cor))
+            {
+                if (x is Rei)
+                {
+                    return x;
+                }
+            }
+            return null;
+        }
+        #endregion
+
+        #region Verifica se o Rei está em Xeque
+        public bool verificaXeque(Cor cor)
+        {
+            Peca pecaRei = rei(cor);
+
+            if (pecaRei == null) { throw new TabuleiroException("Não foi possível encontrar a peça Rei de cor " + cor); }
+
+            foreach (Peca x in pecasEmJogo(adversaria(cor)))
+            {
+                bool[,] matriz = x.movimentosPossiveis();
+                if (matriz[pecaRei.posicao.linha, pecaRei.posicao.coluna])
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         #endregion
 
@@ -137,45 +211,55 @@ namespace xadrez
         public void colocarPecas()
         {
             #region Peças Brancas
-            colocarNovaPeca('a', 1, new Torre(tabuleiro, Cor.Branca));
-            colocarNovaPeca('b', 1, new Cavalo(tabuleiro, Cor.Branca));
-            colocarNovaPeca('c', 1, new Bispo(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('a', 1, new Torre(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('b', 1, new Cavalo(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('c', 1, new Bispo(tabuleiro, Cor.Branca));
+            colocarNovaPeca('c', 1, new Torre(tabuleiro, Cor.Branca));
             colocarNovaPeca('d', 1, new Rei(tabuleiro, Cor.Branca));
-            colocarNovaPeca('e', 1, new Dama(tabuleiro, Cor.Branca));
-            colocarNovaPeca('f', 1, new Bispo(tabuleiro, Cor.Branca));
-            colocarNovaPeca('g', 1, new Cavalo(tabuleiro, Cor.Branca));
-            colocarNovaPeca('h', 1, new Torre(tabuleiro, Cor.Branca));
+            colocarNovaPeca('e', 1, new Torre(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('e', 1, new Dama(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('f', 1, new Bispo(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('g', 1, new Cavalo(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('h', 1, new Torre(tabuleiro, Cor.Branca));
 
-            colocarNovaPeca('a', 2, new Peao(tabuleiro, Cor.Branca));
-            colocarNovaPeca('b', 2, new Peao(tabuleiro, Cor.Branca));
-            colocarNovaPeca('c', 2, new Peao(tabuleiro, Cor.Branca));
-            colocarNovaPeca('d', 2, new Peao(tabuleiro, Cor.Branca));
-            colocarNovaPeca('e', 2, new Peao(tabuleiro, Cor.Branca));
-            colocarNovaPeca('f', 2, new Peao(tabuleiro, Cor.Branca));
-            colocarNovaPeca('g', 2, new Peao(tabuleiro, Cor.Branca));
-            colocarNovaPeca('h', 2, new Peao(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('a', 2, new Peao(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('b', 2, new Peao(tabuleiro, Cor.Branca));
+            colocarNovaPeca('c', 2, new Torre(tabuleiro, Cor.Branca));
+            colocarNovaPeca('d', 2, new Torre(tabuleiro, Cor.Branca));
+            colocarNovaPeca('e', 2, new Torre(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('c', 2, new Peao(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('d', 2, new Peao(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('e', 2, new Peao(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('f', 2, new Peao(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('g', 2, new Peao(tabuleiro, Cor.Branca));
+            //colocarNovaPeca('h', 2, new Peao(tabuleiro, Cor.Branca));
             #endregion
 
             #region Peças Pretas
-            colocarNovaPeca('a', 8, new Torre(tabuleiro, Cor.Preta));
-            colocarNovaPeca('b', 8, new Cavalo(tabuleiro, Cor.Preta));
-            colocarNovaPeca('c', 8, new Bispo(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('a', 8, new Torre(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('b', 8, new Cavalo(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('c', 8, new Bispo(tabuleiro, Cor.Preta));
+            colocarNovaPeca('c', 8, new Torre(tabuleiro, Cor.Preta));
             colocarNovaPeca('d', 8, new Rei(tabuleiro, Cor.Preta));
-            colocarNovaPeca('e', 8, new Dama(tabuleiro, Cor.Preta));
-            colocarNovaPeca('f', 8, new Bispo(tabuleiro, Cor.Preta));
-            colocarNovaPeca('g', 8, new Cavalo(tabuleiro, Cor.Preta));
-            colocarNovaPeca('h', 8, new Torre(tabuleiro, Cor.Preta));
+            colocarNovaPeca('e', 8, new Torre(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('e', 8, new Dama(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('f', 8, new Bispo(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('g', 8, new Cavalo(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('h', 8, new Torre(tabuleiro, Cor.Preta));
 
-            colocarNovaPeca('a', 7, new Peao(tabuleiro, Cor.Preta));
-            colocarNovaPeca('b', 7, new Peao(tabuleiro, Cor.Preta));
-            colocarNovaPeca('c', 7, new Peao(tabuleiro, Cor.Preta));
-            colocarNovaPeca('d', 7, new Peao(tabuleiro, Cor.Preta));
-            colocarNovaPeca('e', 7, new Peao(tabuleiro, Cor.Preta));
-            colocarNovaPeca('f', 7, new Peao(tabuleiro, Cor.Preta));
-            colocarNovaPeca('g', 7, new Peao(tabuleiro, Cor.Preta));
-            colocarNovaPeca('h', 7, new Peao(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('a', 7, new Peao(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('b', 7, new Peao(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('c', 7, new Peao(tabuleiro, Cor.Preta));
+            colocarNovaPeca('c', 7, new Torre(tabuleiro, Cor.Preta));
+            colocarNovaPeca('d', 7, new Torre(tabuleiro, Cor.Preta));
+            colocarNovaPeca('e', 7, new Torre(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('d', 7, new Peao(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('e', 7, new Peao(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('f', 7, new Peao(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('g', 7, new Peao(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('h', 7, new Peao(tabuleiro, Cor.Preta));
             #endregion
         }
         #endregion
-    }
+    } 
 }

@@ -22,10 +22,11 @@ namespace tabuleiro
         #endregion
 
         #region Incrementar quantidade de movimentos
-        public void incrementarQtdMovimentos()
-        {
-            qtdMovimentos++;
-        }
+        public void incrementarQtdMovimentos() { qtdMovimentos++; }
+        #endregion
+
+        #region Decrementar quantidade de movimentos
+        public void decrementarQtdMovimentos() { qtdMovimentos--; }
         #endregion
 
         #region Existe movimentos possiveis

@@ -100,7 +100,6 @@ namespace xadrez_console
             Console.ForegroundColor = ConsoleColor.Yellow;
             imprimirConjunto(partida.pecasCapturadas(Cor.Preta));
             Console.ForegroundColor = corAux;
-            Console.WriteLine();
         }
         #endregion
 
@@ -110,8 +109,17 @@ namespace xadrez_console
             imprimirTabuleiro(partida.tabuleiro);
             Console.WriteLine();
             imprimirPecasCapturadas(partida);
+            Console.WriteLine();
             Console.WriteLine("Turno: " + partida.turno);
             Console.WriteLine("Jogador Atual: " + partida.jogadorAtual);
+            if (partida.xeque)
+            {
+                Console.WriteLine();
+                ConsoleColor corAux = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("XEQUE!");
+                Console.ForegroundColor = corAux;
+            }
         }
         #endregion
 

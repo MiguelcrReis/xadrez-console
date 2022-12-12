@@ -78,8 +78,15 @@ namespace xadrez
             { xeque = true; }
             else { xeque = false; }
 
-            turno++;
-            alterajogador();
+            if (verificaXequeMate(adversaria(jogadorAtual)))
+            {
+                terminada = true;
+            }
+            else
+            {
+                turno++;
+                alterajogador();
+            }
         }
         #endregion
 
@@ -199,6 +206,35 @@ namespace xadrez
         }
         #endregion
 
+        #region Verifica Xeque Mate
+        public bool verificaXequeMate(Cor cor)
+        {
+            if (!verificaXeque(cor)) { return false; }
+
+            foreach (Peca x in pecasEmJogo(cor))
+            {
+                bool[,] matriz = x.movimentosPossiveis();
+                for (int i = 0; i < tabuleiro.linhas; i++)
+                {
+                    for (int j = 0; j < tabuleiro.colunas; j++)
+                    {
+                        if (matriz[i, j])
+                        {
+                            Posicao origem = x.posicao;
+                            Posicao destino = new Posicao(i, j);
+                            Peca pecaCapturada = executaMovimento(origem, destino);
+                            bool testeXeque = verificaXeque(cor);
+                            desfazMovimento(origem, destino, pecaCapturada);
+
+                            if (!testeXeque) { return false; }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        #endregion
+
         #region Colocar Nova Peça
         public void colocarNovaPeca(char coluna, int linha, Peca peca)
         {
@@ -214,9 +250,7 @@ namespace xadrez
             //colocarNovaPeca('a', 1, new Torre(tabuleiro, Cor.Branca));
             //colocarNovaPeca('b', 1, new Cavalo(tabuleiro, Cor.Branca));
             //colocarNovaPeca('c', 1, new Bispo(tabuleiro, Cor.Branca));
-            colocarNovaPeca('c', 1, new Torre(tabuleiro, Cor.Branca));
             colocarNovaPeca('d', 1, new Rei(tabuleiro, Cor.Branca));
-            colocarNovaPeca('e', 1, new Torre(tabuleiro, Cor.Branca));
             //colocarNovaPeca('e', 1, new Dama(tabuleiro, Cor.Branca));
             //colocarNovaPeca('f', 1, new Bispo(tabuleiro, Cor.Branca));
             //colocarNovaPeca('g', 1, new Cavalo(tabuleiro, Cor.Branca));
@@ -224,9 +258,8 @@ namespace xadrez
 
             //colocarNovaPeca('a', 2, new Peao(tabuleiro, Cor.Branca));
             //colocarNovaPeca('b', 2, new Peao(tabuleiro, Cor.Branca));
-            colocarNovaPeca('c', 2, new Torre(tabuleiro, Cor.Branca));
-            colocarNovaPeca('d', 2, new Torre(tabuleiro, Cor.Branca));
-            colocarNovaPeca('e', 2, new Torre(tabuleiro, Cor.Branca));
+            colocarNovaPeca('c', 1, new Torre(tabuleiro, Cor.Branca));
+            colocarNovaPeca('h', 7, new Torre(tabuleiro, Cor.Branca));
             //colocarNovaPeca('c', 2, new Peao(tabuleiro, Cor.Branca));
             //colocarNovaPeca('d', 2, new Peao(tabuleiro, Cor.Branca));
             //colocarNovaPeca('e', 2, new Peao(tabuleiro, Cor.Branca));
@@ -239,9 +272,9 @@ namespace xadrez
             //colocarNovaPeca('a', 8, new Torre(tabuleiro, Cor.Preta));
             //colocarNovaPeca('b', 8, new Cavalo(tabuleiro, Cor.Preta));
             //colocarNovaPeca('c', 8, new Bispo(tabuleiro, Cor.Preta));
-            colocarNovaPeca('c', 8, new Torre(tabuleiro, Cor.Preta));
-            colocarNovaPeca('d', 8, new Rei(tabuleiro, Cor.Preta));
-            colocarNovaPeca('e', 8, new Torre(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('c', 8, new Torre(tabuleiro, Cor.Preta));
+            colocarNovaPeca('a', 8, new Rei(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('e', 8, new Torre(tabuleiro, Cor.Preta));
             //colocarNovaPeca('e', 8, new Dama(tabuleiro, Cor.Preta));
             //colocarNovaPeca('f', 8, new Bispo(tabuleiro, Cor.Preta));
             //colocarNovaPeca('g', 8, new Cavalo(tabuleiro, Cor.Preta));
@@ -250,9 +283,9 @@ namespace xadrez
             //colocarNovaPeca('a', 7, new Peao(tabuleiro, Cor.Preta));
             //colocarNovaPeca('b', 7, new Peao(tabuleiro, Cor.Preta));
             //colocarNovaPeca('c', 7, new Peao(tabuleiro, Cor.Preta));
-            colocarNovaPeca('c', 7, new Torre(tabuleiro, Cor.Preta));
-            colocarNovaPeca('d', 7, new Torre(tabuleiro, Cor.Preta));
-            colocarNovaPeca('e', 7, new Torre(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('c', 7, new Torre(tabuleiro, Cor.Preta));
+            colocarNovaPeca('b', 8, new Torre(tabuleiro, Cor.Preta));
+            //colocarNovaPeca('e', 7, new Torre(tabuleiro, Cor.Preta));
             //colocarNovaPeca('d', 7, new Peao(tabuleiro, Cor.Preta));
             //colocarNovaPeca('e', 7, new Peao(tabuleiro, Cor.Preta));
             //colocarNovaPeca('f', 7, new Peao(tabuleiro, Cor.Preta));
@@ -261,5 +294,5 @@ namespace xadrez
             #endregion
         }
         #endregion
-    } 
+    }
 }

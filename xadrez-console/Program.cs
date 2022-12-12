@@ -8,7 +8,7 @@ class Program
     {
         try
         {
-            PartidaXadrez partida = new PartidaXadrez();
+            PartidaXadrez partida = new();
             Console.Write("Nova Partida Iniciada: ");
 
             while (!partida.terminada)
@@ -41,6 +41,8 @@ class Program
                     Console.ReadLine();
                 }
             }
+            Console.Clear();
+            Tela.imprimirPartida(partida);
         }
         catch (TabuleiroException ex)
         {

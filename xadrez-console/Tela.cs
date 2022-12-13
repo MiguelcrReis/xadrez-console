@@ -150,11 +150,15 @@ namespace xadrez_console
         #region Ler Posicao Xadrez 
         public static PosicaoXadrez lerPosicaoXadrez()
         {
-            string entrada = Console.ReadLine();
-            char coluna = entrada[0];
-            int linha = int.Parse(entrada[1].ToString());
+            try
+            {
+                var entrada = Console.ReadLine();
+                char coluna = entrada[0];
+                int linha = int.Parse(entrada[1].ToString());
 
-            return new PosicaoXadrez(coluna, linha);
+                return new PosicaoXadrez(coluna, linha);
+            }
+            catch (Exception ex) { throw ex; }
         }
         #endregion
     }

@@ -14,10 +14,10 @@ namespace xadrez
             return "P";
         }
 
-        private bool existeInimigo(Posicao posicao)
+        private bool existeInimigo(Posicao pos)
         {
-            Peca peca = tabuleiro.peca(posicao);
-            return posicao != null && peca.cor != cor;
+            Peca peca = tabuleiro.peca(pos);
+            return peca != null && peca.cor != cor;
         }
 
         private bool livre(Posicao posicao)
@@ -36,7 +36,7 @@ namespace xadrez
         {
             bool[,] matriz = new bool[tabuleiro.linhas, tabuleiro.colunas];
 
-            Posicao pos = new(0, 0);
+            Posicao pos = new Posicao(0, 0);
 
             if (cor == Cor.Branca)
             {
